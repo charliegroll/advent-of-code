@@ -1,6 +1,6 @@
-import gleam/int.{add, parse}
+import gleam/int.{parse, sum}
 import gleam/iterator.{find, from_list}
-import gleam/list.{fold, map}
+import gleam/list.{map}
 import gleam/result.{is_ok, unwrap}
 import gleam/string.{reverse, split}
 import simplifile.{read}
@@ -8,10 +8,10 @@ import simplifile.{read}
 pub fn pt1() {
   let assert Ok(file) = read("./input/day1")
 
-  let lines = split(file, "\n")
-  let digits_list = map(lines, get_first_and_last_digits)
-
-  fold(digits_list, 0, add)
+  file
+  |> split("\n")
+  |> map(get_first_and_last_digits)
+  |> sum
 }
 
 fn get_first_and_last_digits(line: String) -> Int {
