@@ -1,6 +1,7 @@
 import gleam/int.{parse, sum}
+import gleam/io
 import gleam/iterator.{find, from_list}
-import gleam/list.{map}
+import gleam/list.{first, last, map, rest}
 import gleam/result.{is_ok, unwrap}
 import gleam/string.{reverse, split, to_graphemes}
 import simplifile.{read}
@@ -11,6 +12,22 @@ pub fn pt1() {
   file
   |> split("\n")
   |> map(get_first_and_last_digits)
+  // |> io.debug
+  |> sum
+}
+
+pub fn pt2() {
+  let assert Ok(file) = read("./input/day1")
+
+  file
+  |> split("\n")
+  |> map(fn(line) { line |> to_graphemes |> get_digits([]) })
+  |> map(fn(digits) {
+    let assert Ok(res) =
+      [first(digits), last(digits)] |> result.values |> int.undigits(10)
+    res
+  })
+  // |> io.debug
   |> sum
 }
 
@@ -34,4 +51,20 @@ fn get_first_digit(line: List(String)) -> Result(String, Nil) {
 
     is_ok(i)
   })
+}
+
+fn get_digits(chars: List(String), digits: List(Int)) -> List(Int) {
+  case chars {
+    [] -> list.reverse(digits)
+    ["1", ..] -> get_digits(unwrap(rest(chars), []), [1, ..digits])
+    ["2", ..] -> get_digits(unwrap(rest(chars), []), [2, ..digits])
+    ["3", ..] -> get_digits(unwrap(rest(chars), []), [3, ..digits])
+    ["4", ..] -> get_digits(unwrap(rest(chars), []), [4, ..digits])
+    ["5", ..] -> get_digits(unwrap(rest(chars), []), [5, ..digits])
+    ["6", ..] -> get_digits(unwrap(rest(chars), []), [6, ..digits])
+    ["7", ..] -> get_digits(unwrap(rest(chars), []), [7, ..digits])
+    ["8", ..] -> get_digits(unwrap(rest(chars), []), [8, ..digits])
+    ["9", ..] -> get_digits(unwrap(rest(chars), []), [9, ..digits])
+    _ -> get_digits(unwrap(rest(chars), []), digits)
+  }
 }
