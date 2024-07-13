@@ -1,5 +1,4 @@
 import gleam/int.{parse, sum}
-import gleam/io
 import gleam/iterator.{find, from_list}
 import gleam/list.{first, last, map, rest}
 import gleam/result.{is_ok, unwrap}
@@ -12,7 +11,6 @@ pub fn pt1() {
   file
   |> split("\n")
   |> map(get_first_and_last_digits)
-  // |> io.debug
   |> sum
 }
 
@@ -27,7 +25,6 @@ pub fn pt2() {
       [first(digits), last(digits)] |> result.values |> int.undigits(10)
     res
   })
-  // |> io.debug
   |> sum
 }
 
@@ -54,17 +51,28 @@ fn get_first_digit(line: List(String)) -> Result(String, Nil) {
 }
 
 fn get_digits(chars: List(String), digits: List(Int)) -> List(Int) {
+  let next = rest(chars) |> unwrap([])
+
   case chars {
     [] -> list.reverse(digits)
-    ["1", ..] -> get_digits(unwrap(rest(chars), []), [1, ..digits])
-    ["2", ..] -> get_digits(unwrap(rest(chars), []), [2, ..digits])
-    ["3", ..] -> get_digits(unwrap(rest(chars), []), [3, ..digits])
-    ["4", ..] -> get_digits(unwrap(rest(chars), []), [4, ..digits])
-    ["5", ..] -> get_digits(unwrap(rest(chars), []), [5, ..digits])
-    ["6", ..] -> get_digits(unwrap(rest(chars), []), [6, ..digits])
-    ["7", ..] -> get_digits(unwrap(rest(chars), []), [7, ..digits])
-    ["8", ..] -> get_digits(unwrap(rest(chars), []), [8, ..digits])
-    ["9", ..] -> get_digits(unwrap(rest(chars), []), [9, ..digits])
+    ["1", ..] -> get_digits(next, [1, ..digits])
+    ["2", ..] -> get_digits(next, [2, ..digits])
+    ["3", ..] -> get_digits(next, [3, ..digits])
+    ["4", ..] -> get_digits(next, [4, ..digits])
+    ["5", ..] -> get_digits(next, [5, ..digits])
+    ["6", ..] -> get_digits(next, [6, ..digits])
+    ["7", ..] -> get_digits(next, [7, ..digits])
+    ["8", ..] -> get_digits(next, [8, ..digits])
+    ["9", ..] -> get_digits(next, [9, ..digits])
+    ["o", "n", "e", ..] -> get_digits(next, [1, ..digits])
+    ["t", "w", "o", ..] -> get_digits(next, [2, ..digits])
+    ["t", "h", "r", "e", "e", ..] -> get_digits(next, [3, ..digits])
+    ["f", "o", "u", "r", ..] -> get_digits(next, [4, ..digits])
+    ["f", "i", "v", "e", ..] -> get_digits(next, [5, ..digits])
+    ["s", "i", "x", ..] -> get_digits(next, [6, ..digits])
+    ["s", "e", "v", "e", "n", ..] -> get_digits(next, [7, ..digits])
+    ["e", "i", "g", "h", "t", ..] -> get_digits(next, [8, ..digits])
+    ["n", "i", "n", "e", ..] -> get_digits(next, [9, ..digits])
     _ -> get_digits(unwrap(rest(chars), []), digits)
   }
 }
