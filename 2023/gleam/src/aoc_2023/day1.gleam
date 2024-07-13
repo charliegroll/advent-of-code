@@ -73,6 +73,6 @@ fn get_digits(chars: List(String), digits: List(Int)) -> List(Int) {
     ["s", "e", "v", "e", "n", ..] -> get_digits(next, [7, ..digits])
     ["e", "i", "g", "h", "t", ..] -> get_digits(next, [8, ..digits])
     ["n", "i", "n", "e", ..] -> get_digits(next, [9, ..digits])
-    _ -> get_digits(unwrap(rest(chars), []), digits)
+    _ -> get_digits(next, digits)
   }
 }
