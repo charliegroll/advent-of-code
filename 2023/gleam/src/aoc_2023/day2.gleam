@@ -28,19 +28,16 @@ fn game_value(game_line: String) -> Int {
   let max_dict = dict.from_list(max_list)
 
   string.split(sets, "; ")
-  |> list.fold(9_999_999, fn(acc, set) {
-    string.split(set, ", ")
-    |> list.fold_until(game_id, fn(_, cubes) {
-      let assert [count, color] = string.split(cubes, " ")
-      let assert Ok(count) = int.parse(count)
-      let assert Ok(max) = dict.get(max_dict, color)
+  |> list.flat_map(string.split(_, ", "))
+  |> list.fold_until(9_999_999, fn(acc, cubes) {
+    let assert [count, color] = string.split(cubes, " ")
+    let assert Ok(count) = int.parse(count)
+    let assert Ok(max) = dict.get(max_dict, color)
 
-      case count {
-        n if n > max -> list.Stop(0)
-        _ -> list.Continue(game_id)
-      }
-    })
-    |> int.min(acc)
+    case count {
+      n if n > max -> list.Stop(0)
+      _ -> list.Continue(int.min(game_id, acc))
+    }
   })
 }
 
@@ -62,16 +59,14 @@ fn compute_cube_power(game_line: String) -> Int {
     dict.from_list([#("red", 0), #("blue", 0), #("green", 0)])
 
   string.split(sets, "; ")
-  |> list.fold(base_cube_dict, fn(acc, set) {
-    string.split(set, ", ")
-    |> list.fold(base_cube_dict, fn(acc, cubes) {
-      let assert [count, color] = string.split(cubes, " ")
-      let assert Ok(count) = int.parse(count)
+  |> list.flat_map(string.split(_, ", "))
+  |> list.fold(base_cube_dict, fn(acc, cubes) {
+    let assert [count, color] = string.split(cubes, " ")
+    let assert Ok(count) = int.parse(count)
 
-      dict.upsert(acc, color, fn(old_count) {
-        option.unwrap(old_count, 0)
-        |> int.max(count)
-      })
+    dict.upsert(acc, color, fn(old_count) {
+      option.unwrap(old_count, 0)
+      |> int.max(count)
     })
     |> dict.combine(acc, int.max)
   })
