@@ -1,6 +1,8 @@
 import gleam/dict
 import gleam/int
 import gleam/list
+import gleam/option
+import gleam/result
 import gleam/string
 import simplifile.{read}
 
@@ -40,4 +42,40 @@ fn game_value(game_line: String) -> Int {
     })
     |> int.min(acc)
   })
+}
+
+pub fn pt2() {
+  let assert Ok(file) = read("./input/day2")
+
+  file
+  |> string.split("\n")
+  |> list.filter(fn(s) { !string.is_empty(s) })
+  |> list.map(compute_cube_power)
+  |> int.sum
+}
+
+fn compute_cube_power(game_line: String) -> Int {
+  let assert Ok(#("Game " <> _game_id, sets)) =
+    string.split_once(game_line, ": ")
+
+  let base_cube_dict =
+    dict.from_list([#("red", 0), #("blue", 0), #("green", 0)])
+
+  string.split(sets, "; ")
+  |> list.fold(base_cube_dict, fn(acc, set) {
+    string.split(set, ", ")
+    |> list.fold(base_cube_dict, fn(acc, cubes) {
+      let assert [count, color] = string.split(cubes, " ")
+      let assert Ok(count) = int.parse(count)
+
+      dict.upsert(acc, color, fn(old_count) {
+        option.unwrap(old_count, 0)
+        |> int.max(count)
+      })
+    })
+    |> dict.combine(acc, int.max)
+  })
+  |> dict.values
+  |> list.reduce(fn(acc, i) { acc * i })
+  |> result.unwrap(0)
 }

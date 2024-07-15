@@ -10,4 +10,5 @@ pub fn main() {
 
   io.println("Day 2")
   io.debug(day2.pt1())
+  io.debug(day2.pt2())
 }
