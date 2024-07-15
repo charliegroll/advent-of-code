@@ -6,7 +6,7 @@ import gleam/string.{reverse, split, to_graphemes}
 import simplifile.{read}
 
 pub fn pt1() {
-  let assert Ok(file) = read("./input/day1")
+  let assert Ok(file) = read("./input/day1.txt")
 
   file
   |> split("\n")
@@ -15,7 +15,7 @@ pub fn pt1() {
 }
 
 pub fn pt2() {
-  let assert Ok(file) = read("./input/day1")
+  let assert Ok(file) = read("./input/day1.txt")
 
   file
   |> split("\n")

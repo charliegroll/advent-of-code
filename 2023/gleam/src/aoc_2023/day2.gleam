@@ -10,7 +10,7 @@ import simplifile.{read}
 const max_list = [#("red", 12), #("green", 13), #("blue", 14)]
 
 pub fn pt1() {
-  let assert Ok(file) = read("./input/day2")
+  let assert Ok(file) = read("./input/day2.txt")
 
   file
   |> string.split("\n")
@@ -42,7 +42,7 @@ fn game_value(game_line: String) -> Int {
 }
 
 pub fn pt2() {
-  let assert Ok(file) = read("./input/day2")
+  let assert Ok(file) = read("./input/day2.txt")
 
   file
   |> string.split("\n")
