@@ -9,6 +9,6 @@ pub fn main() {
   io.println("pt2: " <> to_string(day1.pt2()))
 
   io.println("Day 2")
-  io.debug("pt1: " <> to_string(day2.pt1()))
-  io.debug("pt2: " <> to_string(day2.pt2()))
+  io.println("pt1: " <> to_string(day2.pt1()))
+  io.println("pt2: " <> to_string(day2.pt2()))
 }
