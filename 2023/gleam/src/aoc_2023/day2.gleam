@@ -18,11 +18,6 @@ pub fn pt1() {
   |> int.sum
 }
 
-pub type Game {
-  PossibleGame(id: Int)
-  ImpossibleGame
-}
-
 fn game_value(game_line: String) -> Int {
   let assert Ok(#("Game " <> game_id, sets)) =
     string.split_once(game_line, ": ")
