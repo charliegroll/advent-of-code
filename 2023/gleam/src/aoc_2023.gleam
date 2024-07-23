@@ -1,5 +1,6 @@
 import aoc_2023/day1
 import aoc_2023/day2
+import aoc_2023/day3
 import gleam/int.{to_string}
 import gleam/io
 
